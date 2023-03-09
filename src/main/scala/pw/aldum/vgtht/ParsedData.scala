@@ -69,3 +69,6 @@ object ParsedData:
   def apply(stream: java.util.stream.Stream[String]): ParsedData =
     import scala.jdk.CollectionConverters.*
     apply(stream.iterator.nn.asScala)
+
+  def merge(d1: ParsedData, d2: ParsedData): ParsedData =
+    d1.merge(d2)
