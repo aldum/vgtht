@@ -61,3 +61,38 @@ final class ParsedDataTest extends TestSuite:
       )
     }
   }
+
+  test("string iterator parser") {
+    val file1 =
+      """|1,2
+         |1,3
+         |1,3
+         |2,4
+         |2,4
+         |2,4
+    """.stripMargin
+    val file2 =
+      s"""|1 \t2
+          |1\t3
+          |1,3
+          |2,4
+          |2,4
+          |2,4
+    """.stripMargin
+    val file3 =
+      s"""|1,2
+          |1,3
+          |2,4
+          |3,3
+          |2,4
+          |1,3
+          |2,4
+    """.stripMargin
+
+    expect(
+      ParsedData.apply(file1.lines.nn) === goodMap,
+      ParsedData.apply(file2.lines.nn) === goodMap,
+      ParsedData.apply(file3.lines.nn) === r2,
+    )
+
+  }

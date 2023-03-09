@@ -65,3 +65,7 @@ object ParsedData:
     lines
       .map(parseLine)
       .foldLeft[ParsedData](Map.empty)(updateOccurrences)
+
+  def apply(stream: java.util.stream.Stream[String]): ParsedData =
+    import scala.jdk.CollectionConverters.*
+    apply(stream.iterator.nn.asScala)
