@@ -23,11 +23,36 @@ final class ParsedDataTest extends TestSuite:
     3 -> Map(3 -> 1),
   )
 
-  test("merge1") {
-    assert((goodMap.merge(badMap)) == r1)
-    // expect((goodMap.merge(badMap)) === r1)
+  test("merge") {
+    // assert((goodMap.merge(badMap)) == r1)
+    // assert((goodMap.merge(m2)) == r2)
+    expect(
+      goodMap.merge(badMap) === r1,
+      goodMap.merge(m2) === r2,
+    )
   }
-  test("merge2") {
-    assert((goodMap.merge(m2)) == r2)
-    // expect(goodMap.merge(m2) === r2)
+
+  test("line parser") {
+    forAll { (i1: Int, i2: Int) =>
+      expect(
+        // commas
+        ParsedData.parseLine(s"$i1,$i2") === Some((i1, i2)),
+        ParsedData.parseLine(s"$i1 ,$i2") === Some((i1, i2)),
+        ParsedData.parseLine(s"$i1, $i2") === Some((i1, i2)),
+        ParsedData.parseLine(s",$i2") === Some((0, i2)),
+        ParsedData.parseLine(s" ,$i2") === Some((0, i2)),
+        ParsedData.parseLine(s"$i1,") === Some((i1, 0)),
+        ParsedData.parseLine(s"$i1, ") === Some((i1, 0)),
+        // tabs
+        ParsedData.parseLine(s"$i1\t$i2") === Some((i1, i2)),
+        ParsedData.parseLine(s"$i1 \t$i2") === Some((i1, i2)),
+        ParsedData.parseLine(s"$i1\t $i2") === Some((i1, i2)),
+        ParsedData.parseLine(s"\t$i2") === Some((0, i2)),
+        ParsedData.parseLine(s" \t$i2") === Some((0, i2)),
+        ParsedData.parseLine(s"$i1\t") === Some((i1, 0)),
+        ParsedData.parseLine(s"$i1\t ") === Some((i1, 0)),
+        // bad
+        ParsedData.parseLine("") === None,
+      )
+    }
   }
