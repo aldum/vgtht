@@ -13,10 +13,11 @@ extension (d: ParsedData)
         combine: (V, V) => V
       ) =
       val (present, missing) = m2.partition((k, _) => m1.contains(k))
-      missing ++ present.map {
+      missing ++ m1.map {
         case (k, v2) =>
-          m1.get(k) match
+          m2.get(k) match
             case None     => k -> v2
             case Some(v1) => k -> combine(v1, v2)
       }
-    mapMerge(d, other)((m1, m2) => mapMerge(m1, m2)((v, o) => ???))
+
+    mapMerge(d, other)((m1, m2) => mapMerge(m1, m2)(_ + _))
