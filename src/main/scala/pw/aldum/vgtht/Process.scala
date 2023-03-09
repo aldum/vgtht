@@ -7,8 +7,11 @@ import scala.jdk.CollectionConverters.*
 
 object Process:
   def readInput(path: Path) =
-    val paths = Files.list(path).nn.iterator.nn
-    paths
+    Files
+      .walk(path)
+      .nn
+      .iterator
+      .nn
       .asScala
       .filter(_.endsWith(".csv"))
       .map { p =>
