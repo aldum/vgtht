@@ -53,6 +53,11 @@ final class ParsedDataTest extends TestSuite:
         ParsedData.parseLine(s"$i1\t ") === Some((i1, 0)),
         // bad
         ParsedData.parseLine("") === None,
+        ParsedData.parseLine(";") === None,
+        ParsedData.parseLine("1") === None,
+        ParsedData.parseLine("a") === None,
+        ParsedData.parseLine("a,b") === None,
+        ParsedData.parseLine(s"a\tb") === None,
       )
     }
   }
