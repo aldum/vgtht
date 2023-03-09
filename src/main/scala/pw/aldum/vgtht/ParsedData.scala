@@ -52,5 +52,16 @@ object ParsedData:
 
       case _ => None
 
+  def updateOccurrences(
+      accMap: ParsedData,
+      cur: Option[(Int, Int)],
+    ) =
+    cur match
+      case None => accMap
+      case Some((k, v)) =>
+        accMap.merge(Map(k -> Map(v -> 1)))
+
   def apply(lines: Iterator[String]): ParsedData =
-    ???
+    lines
+      .map(parseLine)
+      .foldLeft[ParsedData](Map.empty)(updateOccurrences)
