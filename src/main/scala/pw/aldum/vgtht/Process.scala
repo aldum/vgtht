@@ -56,11 +56,8 @@ object Process:
 
     writeFile(filePath) {
       pick(data)
-        .map((k, v) =>
-          println(s"$k $v")
-          s"$k,$v"
-        )
-        .mkString(s"\n")
+        .map((k, v) => s"$k\t$v")
+        .mkString(s"k\tv\n", s"\n", "\n")
     }
 
   def apply(args: Args) =
